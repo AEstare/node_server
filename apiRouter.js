@@ -914,15 +914,12 @@ const articles = [
 
 // 获取商品列表
 apiRouter.get('/get/goodslist', (req, res) => {
-    //获取到客户端通过查询字符串，发送到服务器的数据
-    const query = req.query
     // 调用res.send()方法吧数据响应给客户端
     res.send({
         status: 0,
         msg: 'GET请求成功！',
         data: goods_list
     })
-
 })
 
 // 获取用户列表
@@ -933,7 +930,6 @@ apiRouter.get('/get/userslist', (req, res) => {
         msg: 'GET请求成功！',
         data: userlist
     })
-
 })
 
 // 获取图书列表
@@ -943,6 +939,42 @@ apiRouter.get('/get/bookslist', (req, res) => {
         status: 0,
         msg: 'GET请求成功',
         data: booklist
+    })
+})
+//获取到客户端通过查询字符串，发送到服务器的数据
+
+// 获取文章列表  _page 页数    _limit 每页展示数量
+apiRouter.get('/get/articleslist', (req, res) => {
+    const { _page, _limit } = req.query
+    let pageArr = []
+    const limitArr = []
+    let page=Number(_page)
+    let limit = Number(_limit)
+    if (page === 1) {
+        for (i = 0; i < limit; i++){
+            limitArr.push(articles[i])
+        }
+        for (i = 0; i < limitArr.length/limit; i++){
+            pageArr.push(limitArr)
+        }
+    } else if (page > 1) {
+        page = page * limit
+        for (i = 0; i < limit; i++){
+            if (articles[page - limit]) {
+                limitArr.push(articles[page - limit])
+            } else {
+            }
+            page++
+        }
+        for (i = 0; i < limitArr.length/limit; i++){
+            pageArr.push(limitArr)
+        }
+    }
+    //调用res.send()方法吧数据响应给客户端
+    res.send({
+        status: 0,
+        msg: 'GET请求成功',
+        data: pageArr
     })
 })
 
