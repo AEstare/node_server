@@ -947,7 +947,7 @@ apiRouter.get('/get/bookslist', (req, res) => {
 apiRouter.get('/get/articleslist', (req, res) => {
     const { _page, _limit } = req.query
     let pageArr = []
-    const limitArr = []
+    let limitArr = []
     let page=Number(_page)
     let limit = Number(_limit)
     if (page === 1) {
@@ -962,12 +962,11 @@ apiRouter.get('/get/articleslist', (req, res) => {
         for (i = 0; i < limit; i++){
             if (articles[page - limit]) {
                 limitArr.push(articles[page - limit])
-            } else {
             }
             page++
         }
         for (i = 0; i < limitArr.length/limit; i++){
-            pageArr.push(limitArr)
+                pageArr.push(limitArr)
         }
     }
     //调用res.send()方法吧数据响应给客户端
